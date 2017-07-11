@@ -1,7 +1,7 @@
 package BOJ;
 import java.io.*;
 
-public class Main {
+public class P1076 {
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
