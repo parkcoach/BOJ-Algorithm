@@ -1,6 +1,5 @@
 package BOJ;
 import java.io.*;
-import java.util.*;
 
 public class P14503로봇청소기 {
 	static int[][] map = new int[51][51];
@@ -31,8 +30,8 @@ public class P14503로봇청소기 {
 		int cnt = 0;
 		int temp = 0;
 		while(true){
-			if(map[r][c]==0){
-				map[r][c] = 2; //1.현재 위치를 청소한다.
+			if(map[r][c]==0){ //1.현재 위치를 청소한다.
+				map[r][c] = 2; 
 				cnt++;
 			}
 
@@ -53,11 +52,11 @@ public class P14503로봇청소기 {
 
 
 			if(!state){
-				temp = d-2 >= 0 ? d-2 : d+2;
+				temp = d-2 >= 0 ? d-2 : d+2; // 2.3 네 방향 모두 돌고 후진
 
 				r = r+dx[temp];
 				c = c+dy[temp];
-				if(map[r][c]==1)
+				if(map[r][c]==1) //2.4벽이면 끝
 					return cnt;
 			}
 		}
