@@ -9,8 +9,9 @@ public class P1000 {
 //		int b = sc.nextInt();
 //		int sum = a+b;
 //		System.out.println(sum);
-		System.out.println((1234)%1000*10+1234/1000);
-		System.out.println((1234%10)*1000+1234/10);
+//		System.out.println((1234)%1000*10+1234/1000);
+//		System.out.println((1234%10)*1000+1234/10);
+		System.out.println(((~9)&15)&4);
 		
 	}
 
