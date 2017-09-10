@@ -1,57 +1,51 @@
 package BOJ;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Scanner;
-
-class Road{
-	int x,y;
-	Road(int x, int y){
-		this.x = x;
-		this.y = y;
-	}
-}
+import java.io.*;
+import java.util.*;
 
 public class P1520내리막길 {
+	static int n, m, ans = 0;
 	static int[][] map = new int[501][501];
 	static int[][] check = new int[501][501];
-	static int[] dx = {0,0,-1,1};
-	static int[] dy = {-1,1,0,0};
-	
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		int n = sc.nextInt();
-		int m = sc.nextInt();
+	static int[] dx = {0, 0, -1, 1};
+	static int[] dy = {-1, 1, 0, 0};
+
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		String[] input = br.readLine().split(" ");
+		n = Integer.parseInt(input[0]);
+		m = Integer.parseInt(input[1]);
+		
 		for(int i=0;i<n;i++){
+			Arrays.fill(check[i], -1);
+		}
+		
+		for(int i=0;i<n;i++){
+			input = br.readLine().split(" ");
 			for(int j=0;j<m;j++){
-				map[i][j] = sc.nextInt();
+				map[i][j] = Integer.parseInt(input[j]);
 			}
 		}
-		
-		bfs(0,0,n,m);
-		System.out.println(check[n-1][m-1]);
+		dfs(0,0);
+		System.out.println(check[0][0]);
 	}
 	
-	public static void bfs(int x, int y, int n, int m){
-		Queue<Road> q = new LinkedList<Road>();
-		check[x][y] = 1;
-		q.add(new Road(x,y));
+	public static int dfs(int x, int y){
+		if(x==n-1 && y==m-1){
+			return 1;
+		}
 		
-		while(!q.isEmpty()){
-			Road r = q.remove();
-			int px = r.x;
-			int py = r.y;
-			
-			for(int i=0;i<4;i++){
-				int rx = px + dx[i];
-				int ry = py + dy[i];
-				if(0<=rx && rx<n && 0<=ry && ry<m){
-					if(map[px][py]>map[rx][ry]){
-						q.add(new Road(rx,ry));
-						check[rx][ry] = check[px][py] + 1;
-					}
-				}
+		if(check[x][y] >= 0) return check[x][y];
+		
+		if(check[x][y]==-1) check[x][y] = 0;
+		
+		for(int i=0;i<4;i++){
+			int rx = x + dx[i];
+			int ry = y + dy[i];
+			if(rx<0 || n<=rx || ry<0 || m<=ry) continue;
+			if(map[rx][ry] < map[x][y]){
+				check[x][y] += dfs(rx,ry);
 			}
 		}
+		return check[x][y];
 	}
-	
 }

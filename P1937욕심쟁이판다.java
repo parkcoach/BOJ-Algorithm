@@ -1,52 +1,47 @@
 package BOJ;
-import java.util.*;
 import java.io.*;
 
-class Tree{
-	int x,y,c;
-	Tree(int x, int y, int c){
-		this.x = x;
-		this.y = y;
-		this.c = c;
-	}
-}
-
 public class P1937욕심쟁이판다 {
+	static int n, max = Integer.MIN_VALUE;
 	static int[][] map = new int[501][501];
 	static int[][] check = new int[501][501];
-	static int[] dx = {0,0,-1,1};
-	static int[] dy = {-1,1,0,0};
+	static int[] dx = {0, 0, -1, 1};
+	static int[] dy = {-1, 1, 0, 0};
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int n = Integer.parseInt(br.readLine());
-		Queue<Tree> q = new LinkedList<Tree>();
+		String[] input = br.readLine().split(" ");
+		n = Integer.parseInt(input[0]);
+		
 		for(int i=0;i<n;i++){
-			String[] line = br.readLine().split(" ");
+			input = br.readLine().split(" ");
 			for(int j=0;j<n;j++){
-				map[i][j] = Integer.parseInt(line[j]);
-				q.add(new Tree(i,j,1));
+				map[i][j] = Integer.parseInt(input[j]);
 			}
 		}
 		
-		int ans = 0;
-		while(!q.isEmpty()){
-			Tree t = q.remove();
-			int tx = t.x;
-			int ty = t.y;
-			int tc = t.c;
-			if(ans<tc) ans = tc;
-			for(int i=0;i<4;i++){
-				int rx = tx + dx[i];
-				int ry = ty + dy[i];
-				if(0<=rx && rx<n && 0<=ry && ry<n){
-					if(map[rx][ry]>map[tx][ty]){
-						q.add(new Tree(rx,ry,tc+1));
-					}
-				}
+		for(int i=0;i<n;i++){
+			for(int j=0;j<n;j++){
+				if(check[i][j]!=0) continue;
+				dfs(i, j);
 			}
 		}
-		System.out.println(ans);
+		System.out.println(max);
 	}
-
+	
+	public static void dfs(int x, int y){
+		int nextX, nextY, depth = 0;
+		
+		for(int i=0;i<4;i++){
+			nextX = x + dx[i];
+			nextY = y + dy[i];
+			if(nextX < 0 || n <= nextX || nextY < 0 || n <= nextY) continue;
+			if(map[x][y] > map[nextX][nextY]){ //큰거부터 들어간다
+				if(check[nextX][nextY]==0) dfs(nextX, nextY); //0이면 탐색해줘
+				if(check[nextX][nextY] > depth) depth = check[nextX][nextY]; //depth에다가 넣어주고 4방향 탐색
+			}
+		}
+		check[x][y] = depth + 1; // 다 돌았으면 depth+1해줘
+		max = Math.max(max, check[x][y]); //최대 살 수 있는 일수 구해줘
+	}
 }
